@@ -12,7 +12,7 @@ The concept for this project is to create an easy to use interface that allows f
 - [X] A button to go to settings. 
 - [X] In settings you will be able to change the amount you are adding and subtracting by. 
 - [ ] Turn on and off the click sound. 
-- [ ] Also to set it to dark mode for ever or to have it go with the system.
+- [X] Also to set it to dark mode for ever or to have it go with the system.
 - [ ] A click noise when hitting the buttons. (this will give you feedback so you know if it is working or not)
 - [ ] The app should allow you to rotate. so you can use it in any position.
 
