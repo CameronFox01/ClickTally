@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var counted = 0 // Use @State to track changes
+    @AppStorage("incrementValue") private var incrementValue: Int = 1
     @Environment(\.colorScheme) var colorScheme // Detects light/dark mode
     var body: some View {
         NavigationStack {
@@ -47,7 +48,7 @@ struct ContentView: View {
                     Spacer() // Pushes the button down
                     //Plus Button
                     Button(action: {
-                        counted += 1;
+                        counted += incrementValue;
                     }) {
                         Image(systemName: "plus.circle")
                             .font(.system(size: 100))
@@ -58,7 +59,7 @@ struct ContentView: View {
                     //Minus Button
                     Button(action: {
                         if( counted != 0){
-                            counted -= 1;
+                            counted -= incrementValue;
                         }
                     }) {
                         Image(systemName: "minus.rectangle")
