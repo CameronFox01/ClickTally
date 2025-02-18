@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var counted = 0 // Use @State to track changes
     @AppStorage("incrementValue") private var incrementValue: Int = 1
+    @AppStorage("darkMode") private var darkMode = false
     @Environment(\.colorScheme) var colorScheme // Detects light/dark mode
     var body: some View {
         NavigationStack {
@@ -23,6 +24,7 @@ struct ContentView: View {
                         }
                         
                         Spacer()
+                        
                         //Reset Button
                         Button(action: {
                             if( counted != 0){
@@ -70,6 +72,7 @@ struct ContentView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top) // Ensures it stretches to full screen
+            .preferredColorScheme(darkMode ? .dark : .light)
         }
     }
 }
