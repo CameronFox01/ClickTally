@@ -40,7 +40,7 @@ struct ContentView: View {
                         }
                     }
                     .padding(.top, 35)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 30) //How close the Rest Button and the Settings are to each other. Higher the number closer they are to each other
                     
                     //Main Text
                     Text("\(counted)")

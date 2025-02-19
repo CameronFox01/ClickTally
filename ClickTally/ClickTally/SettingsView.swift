@@ -12,6 +12,8 @@ struct SettingsView: View {
     @AppStorage("incrementValue") private var incrementValue: Int = 1
     @AppStorage("darkMode") private var darkMode = false
     
+    @AppStorage("soundOn") private var soundOn: Bool = true
+    
     @Environment(\.colorScheme) var colorScheme // Detects current mode
     @Environment(\.colorSchemeContrast) var contrastScheme
     var body: some View {
@@ -29,6 +31,12 @@ struct SettingsView: View {
                                 .frame(width: 60)
                                 .multilineTextAlignment(.center)
                                 .padding()
+            }
+            HStack{
+                Text("Sound Effects")
+                
+                Toggle("", isOn: $soundOn)
+                    .labelsHidden()
             }
     
             HStack {
