@@ -7,75 +7,109 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct ContentView: View {
-    @State private var counted = 0 // Use @State to track changes
+    @AppStorage("counted") private var counted = 0
     @AppStorage("incrementValue") private var incrementValue: Int = 1
     @AppStorage("darkMode") private var darkMode = false
-    @Environment(\.colorScheme) var colorScheme // Detects light/dark mode
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
-        NavigationStack {
-            ZStack{
-                VStack {
-                    HStack{
-                        NavigationLink(destination: SettingsView()) {
-                            Image(systemName: "gear.circle")
-                                .foregroundStyle(colorScheme == .dark ? .white : .black)
-                                .font(.system(size: 45))
+        GeometryReader { geometry in
+            let isLandscape = geometry.size.width > geometry.size.height
+            
+            NavigationStack {
+                ZStack {
+                    VStack {
+                        HStack {
+                            NavigationLink(destination: SettingsView()) {
+                                Image(systemName: "gear.circle")
+                                    .foregroundStyle(colorScheme == .dark ? .white : .black)
+                                    .font(.system(size: isLandscape ? 60 : 50))
+                            }
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                if counted != 0 {
+                                    counted = 0
+                                }
+                            }) {
+                                Text("Reset")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: isLandscape ? 30 : 30))
+                                    .padding()
+                                    .background(Color.red)
+                                    .cornerRadius(10)
+                            }
                         }
+                        .padding(.top, isLandscape ? 35 : 35)
+                        .padding(.horizontal, 30)
+                        
+                        // Main Counter Text
+                        Text("\(counted)")
+                            .font(.system(size: isLandscape ? 80 : 100))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         
                         Spacer()
-                        
-                        //Reset Button
-                        Button(action: {
-                            if( counted != 0){
-                                counted = 0;
+                        var landscape = isLandscape
+                        if(landscape){
+                            HStack{
+                                // Minus Button
+                                Button(action: {
+                                    if counted != 0 {
+                                        counted -= incrementValue
+                                    }
+                                }) {
+                                    Image(systemName: "minus.rectangle")
+                                        .foregroundStyle(.red)
+                                        .font(.system(size: 60))
+                                }
+                                .padding(.bottom, 50)
+                                // Plus Button
+                                Button(action: {
+                                    counted += incrementValue
+                                }) {
+                                    Image(systemName: "plus.circle")
+                                        .font(.system(size: 70))
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .padding(.bottom, 50)
+                                
                             }
-                        }) {
-                            Text("Reset")
-                                .foregroundColor(.white)
-                                .font(.system(size: 30))
-                                .padding() // Adds spacing inside the box
-                                .background(Color.red) // Background color of the box
-                                .cornerRadius(10) // Rounded corners
+                        }else {
+                            // Plus Button
+                            Button(action: {
+                                counted += incrementValue
+                            }) {
+                                Image(systemName: "plus.circle")
+                                    .font(.system(size: isLandscape ? 70 : 100))
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.bottom, isLandscape ? 20 : 50)
+                            
+                            // Minus Button
+                            Button(action: {
+                                if counted != 0 {
+                                    counted -= incrementValue
+                                }
+                            }) {
+                                Image(systemName: "minus.rectangle")
+                                    .foregroundStyle(.red)
+                                    .font(.system(size: isLandscape ? 50 : 75))
+                            }
+                            .padding(.bottom, isLandscape ? 20 : 50)
                         }
                     }
-                    .padding(.top, 35)
-                    .padding(.horizontal, 30) //How close the Rest Button and the Settings are to each other. Higher the number closer they are to each other
-                    
-                    //Main Text
-                    Text("\(counted)")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .font(.system(size: 100))
-                    
-                    Spacer() // Pushes the button down
-                    //Plus Button
-                    Button(action: {
-                        counted += incrementValue;
-                    }) {
-                        Image(systemName: "plus.circle")
-                            .font(.system(size: 100))
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 50) // Keeps it 50 points above the bottom
-                    
-                    //Minus Button
-                    Button(action: {
-                        if( counted != 0){
-                            counted -= incrementValue;
-                        }
-                    }) {
-                        Image(systemName: "minus.rectangle")
-                            .foregroundStyle(.red)
-                            .font(.system(size: 75))
-                    }
-                    .padding(.bottom, 50)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                .preferredColorScheme(darkMode ? .dark : .light)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top) // Ensures it stretches to full screen
-            .preferredColorScheme(darkMode ? .dark : .light)
         }
     }
 }
+
 
 #Preview {
     ContentView()

@@ -11,47 +11,73 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("incrementValue") private var incrementValue: Int = 1
     @AppStorage("darkMode") private var darkMode = false
-    
     @AppStorage("soundOn") private var soundOn: Bool = true
+
+    @Environment(\.colorScheme) var colorScheme
     
-    @Environment(\.colorScheme) var colorScheme // Detects current mode
-    @Environment(\.colorSchemeContrast) var contrastScheme
     var body: some View {
-        VStack {
-            Text("Settings")
-                .font(.largeTitle)
-                .padding()
+        GeometryReader { geometry in
+            let isLandscape = geometry.size.width > geometry.size.height
             
-            HStack{
-                Text("Increase by:")
+            VStack {
+                Text("Settings")
+                    .font(.system(size: 50))
+                    .frame(maxWidth: .infinity, alignment: .top)
+                    .multilineTextAlignment(.center)
                     .padding()
-                TextField("Enter amount", value: $incrementValue, formatter: NumberFormatter())
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .keyboardType(.numberPad)
-                                .frame(width: 60)
-                                .multilineTextAlignment(.center)
-                                .padding()
-            }
-            HStack{
-                Text("Sound Effects")
+
+                if isLandscape {
+                    HStack {
+                        VStack {
+                            toggleOption(label: "Sound Effects", binding: $soundOn)
+                            toggleOption(label: "Dark Mode", binding: $darkMode)
+                        }
+                        .frame(maxWidth: geometry.size.width * 0.40)
+                    
+                        VStack {
+                            incrementField()
+                        }
+                        .frame(maxWidth: geometry.size.width * 0.5)
+                    }
+                } else {
+                    incrementField()
+                    toggleOption(label: "Sound Effects", binding: $soundOn)
+                    toggleOption(label: "Dark Mode", binding: $darkMode)
+                }
                 
-                Toggle("", isOn: $soundOn)
-                    .labelsHidden()
+                Spacer()
             }
-    
-            HStack {
-                Text("Switch to Dark Mode")
-                
-                Toggle("", isOn: $darkMode) // Empty label to remove extra space
-                    .labelsHidden() // Hides the default label
-            }
-        
-            Spacer()
+            .preferredColorScheme(darkMode ? .dark : .light)
+            .navigationTitle("Settings")
         }
-        .preferredColorScheme(darkMode ? .dark : .light)
-        .navigationTitle("Settings") // Adds a title to the navigation bar
+    }
+    
+    /// Function to create a labeled Toggle switch
+    private func toggleOption(label: String, binding: Binding<Bool>) -> some View {
+        HStack {
+            Text(label)
+            Toggle("", isOn: binding)
+                .labelsHidden()
+        }
+    }
+    
+    /// Function to create the increment input field
+    private func incrementField() -> some View {
+        HStack {
+            Text("Increase by:")
+                .padding()
+            TextField("Enter amount", value: $incrementValue, formatter: NumberFormatter())
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(.numberPad)
+                .frame(width: 60)
+                .multilineTextAlignment(.center)
+                .onTapGesture {
+                    incrementValue = 0
+                }
+        }
     }
 }
+
 
 #Preview {
     SettingsView()
