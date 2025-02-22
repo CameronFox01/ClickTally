@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-
-import SwiftUI
-
+import Foundation
 struct ContentView: View {
     @AppStorage("counted") private var counted = 0
     @AppStorage("incrementValue") private var incrementValue: Int = 1
     @AppStorage("darkMode") private var darkMode = false
     @Environment(\.colorScheme) var colorScheme
+    @State private var currentColorScheme: ColorScheme?
     
     var body: some View {
         GeometryReader { geometry in
@@ -104,7 +103,8 @@ struct ContentView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .preferredColorScheme(darkMode ? .dark : .light)
+                .preferredColorScheme(ClickTally.preferredColorScheme(darkMode: darkMode))
+                          
             }
         }
     }

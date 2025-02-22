@@ -7,6 +7,8 @@
 
 
 import SwiftUI
+import UIKit
+import Foundation
 
 struct SettingsView: View {
     @AppStorage("incrementValue") private var incrementValue: Int = 1
@@ -15,9 +17,12 @@ struct SettingsView: View {
 
     @Environment(\.colorScheme) var colorScheme
     
+    @State private var currentInterfaceStyle: UIUserInterfaceStyle = UIScreen.main.traitCollection.userInterfaceStyle
+    
     var body: some View {
         GeometryReader { geometry in
             let isLandscape = geometry.size.width > geometry.size.height
+            
             
             VStack {
                 Text("Settings")
@@ -25,7 +30,7 @@ struct SettingsView: View {
                     .frame(maxWidth: .infinity, alignment: .top)
                     .multilineTextAlignment(.center)
                     .padding()
-
+                
                 if isLandscape {
                     HStack {
                         VStack {
@@ -33,7 +38,7 @@ struct SettingsView: View {
                             toggleOption(label: "Dark Mode", binding: $darkMode)
                         }
                         .frame(maxWidth: geometry.size.width * 0.40)
-                    
+                        
                         VStack {
                             incrementField()
                         }
@@ -47,8 +52,9 @@ struct SettingsView: View {
                 
                 Spacer()
             }
-            .preferredColorScheme(darkMode ? .dark : .light)
+            .preferredColorScheme(ClickTally.preferredColorScheme(darkMode: darkMode)) //calls func
             .navigationTitle("Settings")
+            
         }
     }
     
@@ -77,7 +83,6 @@ struct SettingsView: View {
         }
     }
 }
-
 
 #Preview {
     SettingsView()
