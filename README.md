@@ -16,6 +16,9 @@ The concept for this project is to create an easy to use interface that allows f
 - [ ] A click noise when hitting the buttons. (this will give you feedback so you know if it is working or not)
 - [X] The app should allow you to rotate. so you can use it in any position.
 
+## Issues
+I can not get it to properly change to dark or light mode based off of just the phones system changing. It is set to check when it is first loaded or when toggle button is pressed. Which is not correct.  
+
 ## Requirments 
 - The app should have a user-friendly interface that is accessible to everyone
 - The app must efficiently assist users in counting large quantities with ease.
