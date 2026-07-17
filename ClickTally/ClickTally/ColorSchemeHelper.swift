@@ -8,11 +8,6 @@ import SwiftUI
 import UIKit
 
 // Global function that can be accessed across files
-public func preferredColorScheme(darkMode: Bool) -> ColorScheme? {
-    let interfaceStyle = UIScreen.main.traitCollection.userInterfaceStyle
-    if darkMode || interfaceStyle == .dark {
-        return .dark
-    } else {
-        return .light
-    }
+public func preferredColorScheme(darkMode: Bool) -> ColorScheme {
+    darkMode ? .dark : .light
 }

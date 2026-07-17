@@ -9,9 +9,22 @@ import SwiftUI
 
 @main
 struct ClickTallyApp: App {
+    @State private var isBooting: Bool = true
+    @AppStorage("darkMode") private var darkMode = true
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isBooting {
+                LaunchScreen()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            isBooting = false
+                        }
+                    }
+                } else {
+                    ContentView()
+                        .preferredColorScheme(darkMode ? .dark : .light)
+                }
         }
     }
 }

@@ -5,15 +5,13 @@
 //  Created by Cameron Fox on 2/18/25.
 //
 
-
 import SwiftUI
 import UIKit
 import Foundation
 
 struct SettingsView: View {
     @AppStorage("incrementValue") private var incrementValue: Int = 1
-    @AppStorage("darkMode") private var darkMode = false
-    @AppStorage("soundOn") private var soundOn: Bool = true
+    @AppStorage("darkMode") private var darkMode = true
 
     @Environment(\.colorScheme) var colorScheme
     
@@ -31,10 +29,11 @@ struct SettingsView: View {
                     .multilineTextAlignment(.center)
                     .padding()
                 
+                Spacer()
+                
                 if isLandscape {
                     HStack {
                         VStack {
-                            toggleOption(label: "Sound Effects", binding: $soundOn)
                             toggleOption(label: "Dark Mode", binding: $darkMode)
                         }
                         .frame(maxWidth: geometry.size.width * 0.40)
@@ -46,13 +45,11 @@ struct SettingsView: View {
                     }
                 } else {
                     incrementField()
-                    toggleOption(label: "Sound Effects", binding: $soundOn)
                     toggleOption(label: "Dark Mode", binding: $darkMode)
                 }
                 
                 Spacer()
             }
-            .preferredColorScheme(ClickTally.preferredColorScheme(darkMode: darkMode)) //calls func
             .navigationTitle("Settings")
             
         }
@@ -62,6 +59,7 @@ struct SettingsView: View {
     private func toggleOption(label: String, binding: Binding<Bool>) -> some View {
         HStack {
             Text(label)
+                .font(.title)
             Toggle("", isOn: binding)
                 .labelsHidden()
         }
@@ -72,8 +70,10 @@ struct SettingsView: View {
         HStack {
             Text("Increase by:")
                 .padding()
+                .font(.title)
             TextField("Enter amount", value: $incrementValue, formatter: NumberFormatter())
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .font(.title)
                 .keyboardType(.numberPad)
                 .frame(width: 60)
                 .multilineTextAlignment(.center)

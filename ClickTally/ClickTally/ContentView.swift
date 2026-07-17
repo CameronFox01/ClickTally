@@ -10,7 +10,6 @@ import Foundation
 struct ContentView: View {
     @AppStorage("counted") private var counted = 0
     @AppStorage("incrementValue") private var incrementValue: Int = 1
-    @AppStorage("darkMode") private var darkMode = false
     @Environment(\.colorScheme) var colorScheme
     @State private var currentColorScheme: ColorScheme?
     
@@ -52,7 +51,7 @@ struct ContentView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         
                         Spacer()
-                        var landscape = isLandscape
+                        let landscape = isLandscape
                         if(landscape){
                             HStack{
                                 // Minus Button
@@ -103,7 +102,6 @@ struct ContentView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .preferredColorScheme(ClickTally.preferredColorScheme(darkMode: darkMode))
                           
             }
         }
